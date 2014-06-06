@@ -2,7 +2,7 @@
 
 namespace Bazo\ElasticSearch\DI;
 
-use Bazo\Console\DI\ConsoleExtension;
+use Kdyby\Console\DI\ConsoleExtension;
 
 
 
