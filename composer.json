@@ -16,7 +16,7 @@
 		"nette/nette": "@dev",
 		"psr/log": "@dev",
 		"ruflin/elastica": "@dev",
-		"bazo/nette-console-extension": "@dev"
+		"kdyby/console": "@dev"
 	},
 	"autoload": {
 		"psr-0": {"Bazo": "src/"}
