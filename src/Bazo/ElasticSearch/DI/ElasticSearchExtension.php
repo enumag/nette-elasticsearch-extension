@@ -26,14 +26,12 @@ class ElasticSearchExtension extends \Nette\DI\CompilerExtension
 			'connections' => [], // host, port, path, timeout, transport, persistent, timeout, config -> (curl, headers, url)
 			'roundRobin' => FALSE,
 			'log' => '%debugMode%',
-			'retryOnConflict' => 0]
-		,
-		'mapping' => [
-			'types' => [],
-			'indices' => []
+			'retryOnConflict' => 0,
 		],
+		'types' => [],
+		'indices' => [],
 		'analyzers' => [],
-		'filters' => []
+		'filters' => [],
 	];
 
 
@@ -104,12 +102,5 @@ class ElasticSearchExtension extends \Nette\DI\CompilerExtension
 				->setAutowired(FALSE)
 		;
 	}
-
-
-	public function beforeCompile()
-	{
-		$containerBuilder = $this->getContainerBuilder();
-	}
-
 
 }
