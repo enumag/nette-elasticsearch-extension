@@ -47,14 +47,15 @@ class ElasticSearchCreateIndex extends ElasticSearchCommand
 			foreach($indexFilters as $filterName) {
 				$filters[$filterName] = $this->filters[$filterName];
 			}
-			
+
+			$params = isset($this->indices[$indexName]['params']) ? $this->indices[$indexName]['params'] : [];
+			$params['analysis'] = [
+				'analyzer' => $analyzers,
+				'filter' => $filters,
+			];
+
 			try {
-				$index->create([
-					'analysis' => [
-						'analyzer' => $analyzers,
-						'filter' => $filters
-					]
-				]);
+				$index->create($params);
 				$output->writeln(sprintf('Index <info>%s</info> successfully created.', $indexName));
 			} catch(\Elastica\Exception\ResponseException $e) {
 				if(strpos($e->getMessage(), 'IndexAlreadyExistsException') !== FALSE) {
