@@ -57,16 +57,6 @@ class ElasticSearchExtension extends \Nette\DI\CompilerExtension
 			$elasticaDefinition->addSetup('setLogger', ['@' . $this->prefix('panel')]);
 		}
 
-		$containerBuilder->addDefinition('elastica')
-				->setClass('Elastica\Client')
-				->setFactory('@container::getService', [$this->prefix('elastica')])
-				->setAutowired(FALSE);
-
-		$containerBuilder
-				->addDefinition($this->prefix('elasticSearchManager'))
-				->setClass('Bazo\ElasticSearch\ElasticSearchManager', $commandArguments)
-		;
-
 		$containerBuilder
 				->addDefinition($this->prefix('infoCommand'))
 				->setClass('Bazo\ElasticSearch\Tools\Console\Command\ElasticSearchInfo', ['@' . $this->prefix('elastica')])
