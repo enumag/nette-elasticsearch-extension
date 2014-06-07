@@ -16,7 +16,7 @@ class ElasticSearchCreateIndex extends ElasticSearchCommand
 
 	/** @var \Symfony\Component\Console\Output\OutputInterface */
 	private $output;
-	
+
 	protected function configure()
 	{
 		$this
@@ -29,15 +29,15 @@ class ElasticSearchCreateIndex extends ElasticSearchCommand
 	protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
 	{
 		$this->output = $output;
-		
+
 		$selectedIndexes = $this->askIndexes();
-		
+
 		foreach($selectedIndexes as $indexName) {
 			$index = $this->elastica->getIndex($indexName);
-			
+
 			$indexAnalyzers  = isset($this->indices[$indexName]['analyzers']) ? $this->indices[$indexName]['analyzers'] : [];
 			$indexFilters  = isset($this->indices[$indexName]['filters']) ? $this->indices[$indexName]['filters'] : [];
-			
+
 			$analyzers = [];
 			foreach($indexAnalyzers as $analyzerName) {
 				$analyzers[$analyzerName] = $this->analyzers[$analyzerName];
@@ -67,14 +67,14 @@ class ElasticSearchCreateIndex extends ElasticSearchCommand
 	private function askIndexes()
 	{
 		$indexesToSelect = array_keys($this->indices);
-		
+
 		$selection = $this->dialog->select(
-				$this->output, 
-				'Please select indexes to create', 
-				$indexesToSelect, 
-				$default = NULL, 
-				$attempts = FALSE, 
-				'Value "%s" is invalid', 
+				$this->output,
+				'Please select indexes to create',
+				$indexesToSelect,
+				$default = NULL,
+				$attempts = FALSE,
+				'Value "%s" is invalid',
 				$multi = TRUE
 		);
 
