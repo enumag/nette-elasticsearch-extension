@@ -23,7 +23,7 @@ class ElasticSearchExtension extends \Nette\DI\CompilerExtension
 			'transport' => NULL,
 			'persistent' => TRUE,
 			'timeout' => NULL,
-			'connections' => [], // host, port, path, timeout, transport, persistent, timeout, config -> (curl, headers, url)
+			'servers' => [], // host, port, path, timeout, transport, persistent, timeout, config -> (curl, headers, url)
 			'roundRobin' => FALSE,
 			'log' => '%debugMode%',
 			'retryOnConflict' => 0,
