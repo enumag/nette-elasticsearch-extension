@@ -54,7 +54,7 @@ class ElasticSearchDropIndex extends ElasticSearchCommand
 		
 		$selection = $this->dialog->select(
 				$this->output, 
-				'Please select indexes to create', 
+				'Please select indexes to drop', 
 				$indexesToSelect, 
 				$default = NULL, 
 				$attempts = FALSE, 
