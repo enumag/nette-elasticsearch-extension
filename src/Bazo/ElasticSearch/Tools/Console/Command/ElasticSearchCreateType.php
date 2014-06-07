@@ -39,31 +39,31 @@ class ElasticSearchCreateType extends ElasticSearchCommand
 			$typeIndexes = $indexesForTypes[$typeName];
 			foreach ($selectedIndexes as $indexName) {
 				if (in_array($indexName, $typeIndexes)) {
-					$output->writeln(sprintf('Creating type <info>%s</info> in index <info>%s</info>', $typeName, $indexName));
-					
+					$output->writeln(sprintf('Creating type <info>%s</info> in index <info>%s</info>.', $typeName, $indexName));
+
 					$properties = $this->types[$typeName]['properties'];
 					$params = $this->types[$typeName]['params'];
-					
+
 					$index = $this->elastica->getIndex($indexName);
 					$elasticaType = $index->getType($typeName);
-					
+
 					$elasticaMapping = new \Elastica\Type\Mapping($elasticaType, $properties);
-					
-					if(is_array($params)) {
-						foreach($params as $param) {
-							$elasticaMapping->setParam($param);
+
+					if (is_array($params)) {
+						foreach($params as $param => $value) {
+							$elasticaMapping->setParam($param, $value);
 						}
 					}
-					
+
 					// Send mapping to type
 					try {
 						$res = $elasticaMapping->send();
-						$output->writeln(sprintf('Type <info>%s</info> successfully created in index <info>%s</info>', $typeName, $indexName));
-					} catch(\Elastica\Exception\ResponseException $e) {
-						if(strpos($e->getMessage(), 'IndexMissingException') !== FALSE) {
+						$output->writeln(sprintf('Type <info>%s</info> successfully created in index <info>%s</info>.', $typeName, $indexName));
+					} catch (\Elastica\Exception\ResponseException $e) {
+						if (strpos($e->getMessage(), 'IndexMissingException') !== FALSE) {
 							$output->writeln(sprintf('<error>Index %1$s is missing. Please create index %1$s first.</error>', $indexName));
-						} elseif(strpos($e->getMessage(), 'nested: NullPointerException;') !== FALSE){
-							$output->writeln(sprintf('<error>%s. Probably bad mapping.</error>', $e->getMessage()));
+						} else {
+							$output->writeln(sprintf('<error>Unknown error: %s.</error>', $e->getMessage()));
 						}
 					}
 				}
@@ -77,7 +77,7 @@ class ElasticSearchCreateType extends ElasticSearchCommand
 		$types = array_keys($this->types);
 
 		$selection = $this->dialog->select(
-				$this->output, 'Please select which types to create', $types, $default = NULL, $attempts = FALSE, 'Value "%s" is invalid', $multi = TRUE
+			$this->output, 'Please select which types to create', $types, $default = NULL, $attempts = FALSE, 'Value "%s" is invalid', $multi = TRUE
 		);
 
 		$selectedTypes = array_map(function($index) use ($types) {
@@ -91,7 +91,7 @@ class ElasticSearchCreateType extends ElasticSearchCommand
 	private function askIndexes($indexesForTypes)
 	{
 		$indexesToSelect = [];
-		foreach ($indexesForTypes as $type => $indexes) {
+		foreach ($indexesForTypes as $indexes) {
 			foreach ($indexes as $indexName) {
 				if (!in_array($indexName, $indexesToSelect)) {
 					$indexesToSelect[] = $indexName;
@@ -99,8 +99,13 @@ class ElasticSearchCreateType extends ElasticSearchCommand
 			}
 		}
 
+		if (empty($indexesForTypes)) {
+			$this->output->writeln('<error>No indices found for this type.</error>');
+			return [];
+		}
+
 		$selection = $this->dialog->select(
-				$this->output, 'Please select in which index to create selected types', $indexesToSelect, $default = NULL, $attempts = FALSE, 'Value "%s" is invalid', $multi = TRUE
+			$this->output, 'Please select in which index to create selected types', $indexesToSelect, $default = NULL, $attempts = FALSE, 'Value "%s" is invalid', $multi = TRUE
 		);
 
 		$selectedIndexes = array_map(function($index) use ($indexesToSelect) {
