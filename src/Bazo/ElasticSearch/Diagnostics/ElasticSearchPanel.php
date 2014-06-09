@@ -68,18 +68,18 @@ class ElasticSearchPanel extends Nette\Object implements \Nette\Diagnostics\IBar
 			foreach($query as $key => $variable) {
 				$s .= '<tr class="'. ($i++ % 2 ? 'nette-alt' : '') .'">';
 				$s .= '<th>' . htmlspecialchars($key) . '</th>';
-				
+
 				if(($key === 'data' or $key === 'query') and !empty($variable)) {
-					
+
 					//$json =json_encode($variable, JSON_PRETTY_PRINT);
 					$json = Nette\Utils\Json::encode($variable, Nette\Utils\Json::PRETTY);
-					
+
 					$s .= '<td>' . Debugger::dump($variable, $return = TRUE) .'</td>';
 					$s .= '<td><pre class="nette-dum"><span class="nette-dump-string">' . $json . '</span></pre></td>';
 				} else {
 					$s .= '<td colspan="2">' . Debugger::dump($variable, $return = TRUE) .'</td>';
 				}
-				
+
 				$s .= '</tr>';
 			}
 			$s .= '</table>';
@@ -94,7 +94,7 @@ class ElasticSearchPanel extends Nette\Object implements \Nette\Diagnostics\IBar
 
 	/**
 	 * @param ElasticSearch\Exception $e
-	 * @return type 
+	 * @return type
 	 */
 	public static function renderException(\Exception $e = null)
 	{
@@ -128,38 +128,38 @@ class ElasticSearchPanel extends Nette\Object implements \Nette\Diagnostics\IBar
 			Debugger::$blueScreen->addPanel(array($panel, 'renderException'));
 			Debugger::$bar->addPanel($panel);
 		}
-		
+
 		return $panel;
 	}
 
 
 	public function alert($message, array $context = array())
 	{
-		
+		$this->addQuery($context);
 	}
 
 
 	public function critical($message, array $context = array())
 	{
-		
+		$this->addQuery($context);
 	}
 
 
 	public function debug($message, array $context = array())
 	{
-		
+		$this->addQuery($context);
 	}
 
 
 	public function emergency($message, array $context = array())
 	{
-		
+		$this->addQuery($context);
 	}
 
 
 	public function error($message, array $context = array())
 	{
-		
+		$this->addQuery($context);
 	}
 
 
@@ -171,19 +171,19 @@ class ElasticSearchPanel extends Nette\Object implements \Nette\Diagnostics\IBar
 
 	public function log($level, $message, array $context = array())
 	{
-		
+		$this->addQuery($context);
 	}
 
 
 	public function notice($message, array $context = array())
 	{
-		
+		$this->addQuery($context);
 	}
 
 
 	public function warning($message, array $context = array())
 	{
-		
+		$this->addQuery($context);
 	}
 
 }
